@@ -1,72 +1,72 @@
-var garden,rabbit;
-var gardenImg,rabbitImg;
-var appleImage;
+var garden, rabbit, apple, leaf;
+var gardenImg, rabbitImg, appleImg, leafImg;
+var select_sprites;
 
 function preload(){
   gardenImg = loadImage("garden.png");
   rabbitImg = loadImage("rabbit.png");
-  appleImage = loadImage("apple.png")
-  redImage = loadImage("redImage.png");
-  greenImage = loadImage("leaf.png")
-
-
+  appleImg = loadImage("apple.png");
+  leafImg = loadImage("orangeLeaf.png");
 }
 
 function setup(){
-  
-  createCanvas(400,400);
-  
+createCanvas(400,400);
 // Moving background
-garden=createSprite(200,200);
+garden = createSprite(200,200);
 garden.addImage(gardenImg);
 
-//creating boy running
+//creating rabbit running
 rabbit = createSprite(180,340,30,30);
-rabbit.scale =0.09;
 rabbit.addImage(rabbitImg);
+rabbit.scale =0.05;
+select_sprites = 1;
 }
-
 
 function draw() {
-  background(0);
-  rabbit.x=mouseX
-  edges= createEdgeSprites();
+  background("blue");
+
+  edges = createEdgeSprites();
   rabbit.collide(edges);
-  var num= Math.round(random(1,3))
-  if(frameCount%80===0){
-  if (num===1){
-    createApples()
+
+  if(frameCount % 80 == 0){
+    if(select_sprites == 1){
+      createApples();
+    }
+      else {
+        createLeaves();    
+    }
   }
-if (num===2){
-  createred()
-}
-if (num===3){
-  creategreen()
-}
-  } 
-  drawSprites();
+    
 
+ rabbit.x = World.mouseX;
+ rabbit.y = World.mouseY;
+if(mouseIsOver(apple)){
+  apple.destroy();
 }
-function createApples(){
-  var apple= createSprite(random(50,300),40)
-  apple.addImage(appleImage)
-  apple.scale= 0.1
-  apple.velocityY= 5
-  apple.lifetime=100
-  
+if(mouseIsOver(leaf)){
+leaf.destroy();
 }
-function createred(){
-  var red = createSprite(random(59,300),40)
-red.addImage(redImage)
-red.scale= 0.1
-red.velocityY=3
-red.lifetime=75
 
+
+ drawSprites();   
 }
-function creategreen(){
-  var green = createSprite(random(50,300),40)
-  green.addImage(greenImage)
-  green.scale=0.1
-  green.velocityY= 4
-  green.lifetime=75
+
+function createApples() {
+  apple = createSprite(random(50, 350),40, 10, 10);
+  apple.addImage(appleImg);
+  apple.scale = 0.04;
+  apple.velocityY = 5;
+  //lifetime
+  apple.lifetime=200;
+  select_sprites=2;
+}
+
+function createLeaves() {
+  leaf = createSprite(random(75, 300),30, 10, 10);
+  leaf.addImage(leafImg);
+  leaf.scale = 0.04;
+  leaf.velocityY = 5;
+  //lifetime
+  leaf.lifetime = 200;
+  select_sprites=1;
 }
